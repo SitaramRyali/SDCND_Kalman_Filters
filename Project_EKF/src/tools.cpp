@@ -10,13 +10,12 @@ Tools::Tools() {}
 
 Tools::~Tools() {}
 
-VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
-                              const vector<VectorXd> &ground_truth) {
+VectorXd Tools::CalculateRMSE(const vector<VectorXd>& estimations,
+	const vector<VectorXd>& ground_truth) {
 	int est_len = estimations[0].size();
 	VectorXd rmse(est_len);
 	rmse = VectorXd::Zero(est_len);
 	//rmse << 0, 0, 0, 0;
-	
 	// TODO: YOUR CODE HERE
 	// check the validity of the following inputs:
 	//  * the estimation vector size should not be zero
@@ -44,21 +43,18 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
 
 	// TODO: calculate the mean
 	rmse = rmse / estimations.size();
-
 	// calculate the squared root
 	rmse = rmse.array().sqrt();
-
-
 
 	// return the result
 	return rmse;
 }
 
 MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
-  /**
-   * TODO:
-   * Calculate a Jacobian here.
-   */
+	/**
+	 * TODO:
+	 * Calculate a Jacobian here.
+	 */
 
 	MatrixXd Hj(3, 4);
 	// recover state parameters
