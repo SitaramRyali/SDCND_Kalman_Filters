@@ -56,17 +56,26 @@ void KalmanFilter::UpdateEKF(const VectorXd & z) {
 	 */
 	float pos = sqrt(x_(0) * x_(0) + x_(1) * x_(1));
 	float angle = atan2(x_(1),x_(0));
-	float angle_dot;
+	float pos_dot;
 	if (pos < 0.001) {
-		angle_dot = 0;
+		pos = 0.001;
 	}
-	else {
-		angle_dot = ((x_(0) * x_(2) + x_(1) * x_(3)) / pos);
-	}
+	pos_dot = ((x_(0) * x_(2) + x_(1) * x_(3)) / pos);
 
 	VectorXd z_pred(3);
-	z_pred << pos, angle, angle_dot;
+	z_pred << pos, angle, pos_dot;
+
 	VectorXd y = z - z_pred;
+	//change here for the limitation of angles.
+	if(y(1)>M_PI)
+	{
+		y(1) -= 2*M_PI;
+	}
+	else if(y(1)< -M_PI)
+	{
+		y(1) += 2*M_PI;
+	}
+
 	MatrixXd Ht = H_.transpose();
 	MatrixXd S = H_ * P_ * Ht + R_;
 	MatrixXd Si = S.inverse();
